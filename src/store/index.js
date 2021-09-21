@@ -1,8 +1,12 @@
 import { createStore } from "vuex";
 
-export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+import Login from "./modules/login";
+import Server from "./modules/server";
+
+export default new createStore({
+  modules: {
+    Login,
+    Server
+  }
 });
+
