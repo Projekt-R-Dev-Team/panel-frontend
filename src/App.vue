@@ -1,30 +1,52 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="webapp-layout">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Inter">
+    <navbar></navbar>
+    <div class="page-content">
+      <div class="sidebar">
+        <!-- Sidebar -->
+      </div>
+      <router-view class="app"></router-view>
+    </div>
+    <!-- Alerts -->
   </div>
-  <router-view />
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import navbar from "./components/Navbar/navbar";
+import { mapGetters } from 'vuex';
+import {doOnStartActions} from "./store/utils";
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  name: "App",
+  components: {
+    navbar
+  },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: "Login/isLoggedIn"
+    })
+  },
+  watch: {
+    isLoggedIn: function (val) {
+      if (val) {
+        doOnStartActions(this.$store);
+      }
     }
   }
+};
+</script>
+<style>
+.webapp-layout {
+  height: 100%;
+}
+
+html,body {
+  height: 100%;
+}
+
+#app {
+  height: 100%;
 }
 </style>
