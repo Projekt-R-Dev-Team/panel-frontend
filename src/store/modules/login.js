@@ -17,16 +17,19 @@ const getters = {
 const actions = {
   login({ commit }, loginData) {
     return new Promise((resolve, reject) => {
-      api.post("user/login/", loginData).then(resp => {
-        if (resp.data.token) {
-          const token = `Bearer ${resp.data.token}`;
-          commit("auth_success", token);
-          resolve(resp);
-        }
-      }).catch(err => {
-        commit("logout");
-        reject(err);
-      })
+      api
+        .post("user/login/", loginData)
+        .then((resp) => {
+          if (resp.data.token) {
+            const token = `Bearer ${resp.data.token}`;
+            commit("auth_success", token);
+            resolve(resp);
+          }
+        })
+        .catch((err) => {
+          commit("logout");
+          reject(err);
+        });
     });
   },
   logout({ commit }) {
@@ -39,7 +42,7 @@ const actions = {
 
 const mutations = {
   auth_success(state, token) {
-    console.log('HIER!');
+    console.log("HIER!");
     state.token = token;
     Cookies.set(COOKIE_NAME, token);
   },

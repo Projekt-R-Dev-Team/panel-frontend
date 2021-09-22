@@ -2,7 +2,7 @@
   <div class="header @@classList">
     <!-- navbar -->
     <nav class="navbar-classic navbar navbar-expand-lg">
-      <a id="nav-toggle" href="#"
+      <a id="nav-toggle" @click="updateSidebar" style="cursor: pointer"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -20,12 +20,14 @@
           <line x1="3" y1="18" x2="21" y2="18"></line></svg
       ></a>
       <!--Navbar nav -->
-      <ul class="navbar-nav navbar-right-wrap ms-auto d-flex nav-top-wrap" v-if="isLoggedIn">
+      <ul
+        class="navbar-nav navbar-right-wrap ms-auto d-flex nav-top-wrap"
+        v-if="isLoggedIn"
+      >
         <!-- List -->
         <li class="dropdown ms-2">
           <a
             class="rounded-circle"
-            href="#"
             role="button"
             id="dropdownUser"
             data-bs-toggle="dropdown"
@@ -33,7 +35,11 @@
             aria-expanded="false"
           >
             <div class="avatar avatar-md">
-              <img alt="avatar" src="../../assets/images/avatar/avatar.jpg" class="rounded-circle">
+              <img
+                alt="avatar"
+                src="../../assets/images/avatar/avatar.jpg"
+                class="rounded-circle"
+              />
             </div>
           </a>
           <div
@@ -43,14 +49,16 @@
             <div class="px-4 pb-0 pt-2">
               <div class="lh-1">
                 <h5 class="mb-1">{{ currentUser.username }}</h5>
-                <a href="#" class="text-inherit fs-6">View my profile</a>
+                <router-link :to="{ name: 'UserShow' }">
+                  <a class="text-inherit fs-6">View my profile</a>
+                </router-link>
               </div>
               <div class="dropdown-divider mt-3 mb-2"></div>
             </div>
 
             <ul class="list-unstyled">
               <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -76,7 +84,7 @@
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="./index.html">
+                <a class="dropdown-item" @click="logout">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -108,7 +116,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   name: "navbar.vue",
@@ -117,6 +125,15 @@ export default {
       isLoggedIn: "Login/isLoggedIn",
       currentUser: "Login/data"
     })
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("Login/logout");
+      this.$router.push({ name: "login" });
+    },
+    updateSidebar() {
+      this.$store.dispatch("Sidebar/changeToggel");
+    }
   }
 };
 </script>
