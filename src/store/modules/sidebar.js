@@ -21,7 +21,6 @@ const actions = {
 
 const mutations = {
   change(state) {
-    console.log("Update");
     state.toggel = !state.toggel;
     Cookies.set(COOKIE_NAME, !state.toggel);
   }

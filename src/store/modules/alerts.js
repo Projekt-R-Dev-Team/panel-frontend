@@ -1,5 +1,5 @@
-import { createToast, withProps } from 'mosha-vue-toastify';
 import alerts from "../../components/Alerts/alerts";
+import vue from 'vue';
 
 const actions = {
   alert({ commit }, alert) {
@@ -12,7 +12,14 @@ const actions = {
 
 const mutations = {
   sendAlert(state, alert) {
-    createToast(withProps(alerts, { header: alert.title, message: alert.message, type: alert.type }), {'hideProgressBar': true})
+    vue.$toast({
+      component: alerts,
+      props: {
+        title: alert.title,
+        message: alert.message,
+        type: alert.type
+      }
+    }, { timeout: 2000, icon: false, hideProgressBar: true, type: "default", toastClassName: "vue-alert-default", closeButtonClassName: 'vue-alert-close'})
   }
 };
 

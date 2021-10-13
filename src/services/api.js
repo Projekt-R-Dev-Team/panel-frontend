@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "../store/index";
+import vue from 'vue';
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_API_BASE,
@@ -11,7 +12,7 @@ const http = axios.create({
 
 http.interceptors.request.use((request) => {
   const scopedRequest = request;
-  const token = store.getters["Login/token"]["Login/token"];
+  const token = store.getters["Login/token"];
 
   if (token) scopedRequest.headers.Authorization = token;
   return scopedRequest;
@@ -22,7 +23,7 @@ http.interceptors.response.use(
   (err) => {
     switch (err.response.status) {
       case 401:
-        store.dispatch("Alerts/alert", { type: 'error', title: 'Login failed', message: 'Wrong Username or Password' });
+       store.dispatch("Alerts/alert",  { type: 'error', title: 'Login failed', message: 'Wrong Username or Password' });
         if (store.getters["Login/isLoggedIn"]) {
           store.dispatch("Login/logout");
         }
@@ -32,10 +33,10 @@ http.interceptors.response.use(
         console.log("Error 400");
         break;
       case 403:
-        store.dispatch("Alerts/alert", { type: 'error', title: 'Auth Error', message: 'Please make sure you have the correct access rights' });
+        store.dispatch("Alerts/alert",  { type: 'error', title: 'Auth Error', message: 'Please make sure you have the correct access rights' });
         break;
       case 404:
-        store.dispatch("Alerts/alert", { type: 'error', title: 'Not found', message: `Cannot ${(err.response.config.method).toLocaleUpperCase()} ${err.request.responseURL}` });
+        store.dispatch("Alerts/alert",  { type: 'error', title: 'Not found', message: `Cannot ${(err.response.config.method).toLocaleUpperCase()} ${err.request.responseURL}` });
         break;
       case 500:
         // Error

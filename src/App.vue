@@ -13,11 +13,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 import { doOnStartActions } from "./store/utils";
 
 import navbar from "./components/Navbar/navbar";
 import sidebar from "./components/Sidebar/sidebar";
+
 
 export default {
   name: "App",
@@ -38,7 +39,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     if (this.isLoggedIn) {
       doOnStartActions(this.$store);
     }
@@ -57,5 +58,9 @@ body {
 
 #app {
   height: 100%;
+}
+
+.text-primary {
+  color: #624BFF !important
 }
 </style>

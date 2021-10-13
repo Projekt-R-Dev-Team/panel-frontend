@@ -17,37 +17,12 @@
         <div class="pt-20 rounded-top user-background"></div>
         <div class="bg-white rounded-bottom smooth-shadow-sm">
           <div
-            class="
-              d-flex
-              align-items-center
-              justify-content-between
-              pt-4
-              pb-6
-              px-4
-            "
-          >
+            class="d-flex align-items-center justify-content-between pt-4 pb-6 px-4 ">
             <div class="d-flex align-items-center">
               <!-- avatar -->
               <div
-                class="
-                  avatar-xxl
-                  me-2
-                  position-relative
-                  d-flex
-                  justify-content-end
-                  align-items-end
-                  mt-n10
-                "
-              >
-                <img
-                  src="../../assets/images/avatar/avatar.jpg"
-                  class="
-                    avatar-xxl
-                    rounded-circle
-                    border border-4 border-white-color-40
-                  "
-                  alt=""
-                />
+                class="avatar-xxl me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
+                <img :src="getAvatar" class="avatar-xxl rounded-circle border border-4 border-white-color-40"/>
               </div>
               <!-- text -->
               <div class="lh-1">
@@ -55,9 +30,11 @@
               </div>
             </div>
             <div>
-              <a class="btn btn-outline-primary d-none d-md-block"
+              <router-link :to="{ name: 'UserEdit' }">
+                <a class="btn btn-outline-primary d-none d-md-block"
                 >Edit Profile</a
-              >
+                >
+              </router-link>
             </div>
           </div>
         </div>
@@ -73,8 +50,15 @@ export default {
   name: "userShow",
   computed: {
     ...mapGetters({
-      currentUser: "Login/data"
-    })
+      currentUser: "Login/data",
+      avatar: "Login/avatar"
+    }),
+    getAvatar() {
+      if (this.avatar) {
+        return this.avatar.replace('dataimage/pngbase64', 'data:image/png;base64,');
+      }
+      return '../../assets/images/avatar/avatar.jpg'
+    }
   }
 };
 </script>

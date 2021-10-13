@@ -38,31 +38,75 @@
 
           <!-- Nav header -->
           <li class="nav-item">
-            <div class="navbar-heading">Server</div>
+            <div class="navbar-heading">Server-Panel</div>
           </li>
 
           <!-- Nav item -->
           <ul class="navbar-nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link">
-                <i class="nav-icon icon-xs me-2 bi bi-server" />
-                Server
-              </a>
-            </li>
+            <router-link :to="{ name: 'ServerList' }">
+              <li class="nav-item">
+                <a class="nav-link">
+                  <i class="nav-icon icon-xs me-2 bi bi-server" />
+                  Server
+                </a>
+              </li>
+            </router-link>
+            <router-link :to="{ name: 'Groups' }">
+              <li class="nav-item">
+                <a class="nav-link">
+                  <i class="nav-icon icon-xs me-2 bi bi-collection" />
+                  Groups
+                </a>
+              </li>
+            </router-link>
+            <router-link :to="{ name: 'News' }">
+              <li class="nav-item">
+                <a class="nav-link">
+                  <i class="nav-icon icon-xs me-2 bi bi-newspaper"></i>
+                  News
+                </a>
+              </li>
+            </router-link>
           </ul>
 
           <!-- Admin header -->
-          <li class="nav-item">
+          <li class="nav-item" v-if="currentUser.isAdmin === 1">
             <div class="navbar-heading">Admin Pages</div>
           </li>
           <!-- Nav item -->
-          <ul class="navbar-nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link">
-                <i class="nav-icon icon-xs me-2 bi bi-people-fill" />
-                Users
-              </a>
-            </li>
+          <ul class="navbar-nav flex-column" v-if="currentUser.isAdmin === 1">
+            <router-link :to="{ name: 'GroupsAdmin'}">
+              <li class="nav-item">
+                <a class="nav-link">
+                  <i class="nav-icon icon-xs me-2 bi bi-collection" />
+                  Groups
+                </a>
+              </li>
+            </router-link>
+            <router-link :to="{ name: 'NewsAdmin'}">
+              <li class="nav-item">
+                <a class="nav-link">
+                  <i class="nav-icon icon-xs me-2 bi bi-newspaper" />
+                  News
+                </a>
+              </li>
+            </router-link>
+            <router-link :to="{ name: 'ServersAdmin'}">
+              <li class="nav-item">
+                <a class="nav-link">
+                  <i class="nav-icon icon-xs me-2 bi bi-server" />
+                  Servers
+                </a>
+              </li>
+            </router-link>
+            <router-link :to="{ name: 'UsersAdmin'}">
+              <li class="nav-item">
+                <a class="nav-link">
+                  <i class="nav-icon icon-xs me-2 bi bi-people-fill" />
+                  Users
+                </a>
+              </li>
+            </router-link>
           </ul>
         </ul>
       </div>
@@ -71,8 +115,15 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
-  name: "sidebar"
+  name: "sidebar",
+  computed: {
+    ...mapGetters({
+      currentUser: "Login/data"
+    })
+  }
 };
 </script>
 

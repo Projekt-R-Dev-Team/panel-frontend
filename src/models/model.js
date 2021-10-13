@@ -14,12 +14,8 @@ export class Model {
     const obj = _obj || {};
     this.path = path;
     Model.validateMapping(mapping);
-
-    Object.entries(mapping).forEach((key, mappingData) => {
-      if (
-        mappingData.type.prototype instanceof Model &&
-        !mappingData.isNested
-      ) {
+    Object.entries(mapping).forEach(([key, mappingData]) => {
+      if (mappingData.type.prototype instanceof Model && !mappingData.isNested) {
         this.createForeignRelations(key, mappingData.type);
       }
 
@@ -32,9 +28,7 @@ export class Model {
           if (Array.isArray(val)) {
             val = val.map((v) => new mappingData.type(v));
           } else {
-            throw Error(
-              `Attribute ${key} should be array, found ${typeof val}`
-            );
+            throw Error(`Attribute ${key} should be array, found ${typeof val}`);
           }
         } else {
           val = new mappingData.type(val);
@@ -53,6 +47,7 @@ export class Model {
 
   static validateMapping(mapping) {
     Object.entries(mapping).forEach(([key, value]) => {
+
       if (!value.hasOwnProperty("type")) {
         throw Error(`Missing type in ${key}`);
       }
@@ -66,19 +61,15 @@ export class Model {
   createForeignRelations(_property, Clazz) {
     let property = _property.replace(/_id$/g, "");
 
+
     property = property
-      .replace(
-        /([^\W_])([^\W_]*)/g,
-        (g0, g1, g2) => g1.toUpperCase() + g2.toUpperCase()
-      )
-      .replace(/(-*_*)/g, "");
+        .replace(/([^\W_])([^\W_]*)/g, (g0, g1, g2) => g1.toUpperCase() + g2.toUpperCase())
+        .replace(/(-*_*)/g, "");
 
     Object.defineProperty(this, property, {
       get() {
         if (this[_property]) {
-          const res = window.app.$store.getters[`${Clazz.NAME}/byId`](
-            this[_property]
-          );
+          const res = window.app.$store.getters[`${Clazz.NAME}/byId`](this[_property]);
           if (!res.id && this.id) {
             window.app.$store.dispatch(`${Clazz.NAME}/byId`, this[_property]);
           }
@@ -100,23 +91,25 @@ export class Model {
     const obj = this;
     return new Promise((resolve, reject) => {
       if (obj.id) {
+
         api
-          .put(obj.endpoint, obj)
-          .then((resp) => {
-            resolve(resp.data);
-          })
-          .catch((e) => {
-            reject(e);
-          });
+            .put(obj.endpoint, obj)
+            .then((resp) => {
+              resolve(resp.data);
+            })
+            .catch((e) => {
+              reject(e);
+            });
       } else {
+
         api
-          .post(obj.endpoint, obj)
-          .then((resp) => {
-            resolve(resp.data);
-          })
-          .catch((e) => {
-            reject(e);
-          });
+            .post(obj.endpoint, obj)
+            .then((resp) => {
+              resolve(resp.data);
+            })
+            .catch((e) => {
+              reject(e);
+            });
       }
     });
   }
