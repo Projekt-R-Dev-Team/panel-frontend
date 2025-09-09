@@ -1,9 +1,10 @@
 export const onStartActions = [
-    "Server/all"
+    "Server/all",
+    "Groups/all"
 ];
 
-export const doOnStartActions = store => {
-    onStartActions.forEach(action => {
-        store.dispatch(action);
-    })
-}
+export const doOnStartActions = (store) => {
+  onStartActions.forEach((action) => {
+    store.dispatch(action);
+  });
+};

@@ -1,31 +1,35 @@
 <template>
-  <div class="webapp-layout">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Inter">
-    <navbar></navbar>
-    <div class="page-content">
-      <div class="sidebar">
-        <!-- Sidebar -->
-      </div>
+  <div id="db-wrapper" :class="{ toggled: sidebar }">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inter"
+    />
+    <sidebar v-if="isLoggedIn"></sidebar>
+    <div id="page-content">
+      <navbar></navbar>
       <router-view class="app"></router-view>
     </div>
-    <!-- Alerts -->
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+import { doOnStartActions } from "./store/utils";
+
 import navbar from "./components/Navbar/navbar";
-import { mapGetters } from 'vuex';
-import {doOnStartActions} from "./store/utils";
+import sidebar from "./components/Sidebar/sidebar";
+
 
 export default {
   name: "App",
   components: {
-    navbar
+    navbar,
+    sidebar
   },
   computed: {
     ...mapGetters({
-      isLoggedIn: "Login/isLoggedIn"
+      isLoggedIn: "Login/isLoggedIn",
+      sidebar: "Sidebar/isToggel"
     })
   },
   watch: {
@@ -33,6 +37,11 @@ export default {
       if (val) {
         doOnStartActions(this.$store);
       }
+    }
+  },
+  created() {
+    if (this.isLoggedIn) {
+      doOnStartActions(this.$store);
     }
   }
 };
@@ -42,11 +51,16 @@ export default {
   height: 100%;
 }
 
-html,body {
+html,
+body {
   height: 100%;
 }
 
 #app {
   height: 100%;
+}
+
+.text-primary {
+  color: #624BFF !important
 }
 </style>
